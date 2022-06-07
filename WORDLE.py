@@ -1,5 +1,10 @@
 import random
 
+
+
+'''How do I make the wordle recognize if there's more than one letter in the wordle_word and if there'''
+
+'''list for in if statement, '''
 # class word_maker:
 #     def __init__(self, word):
 #         self.word = word
@@ -36,6 +41,8 @@ player = input('Who would you like to play the WORDLE game? Enter "you" if you w
                'a genetic algorithm AI to play ')
 # initializing variables
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
+alphabet_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+                 'v', 'w', 'x', 'y', 'z']
 wordlist = []
 correctlengthlist = []
 symbol_list = "`~!@#$%^&*()_+{}|[]\\=-:;'"'<,>.?"/1234567890'
@@ -62,7 +69,7 @@ print(wordle_word)
 
 # if satement that will run if the user wants a genetic algorithm so solve the wordle game
 
-if player == 'AI' or 'ai':
+if player == 'AI' or player == 'ai':
     gen_alg_guess = ''
     # initializing AI variables
     letter_count_dict = {}
@@ -96,66 +103,139 @@ if player == 'AI' or 'ai':
             word_score += letter_count_dict[letter]
         word_score_dict[word] = word_score
 
+    # initailize variables
+    gen_alg_guess = max(word_score_dict, key=word_score_dict.get)
+    word_score_dict.update({gen_alg_guess: -1})
+    print(gen_alg_guess, word_score_dict[gen_alg_guess])
+
     # While statement to keep playing the game until the AI guesses the word
     while gen_alg_guess != wordle_word:
-        gen_alg_guess = max(word_score_dict, key=word_score_dict.get)
-        word_score_dict.update({gen_alg_guess: -1})
-        print(gen_alg_guess, word_score_dict[gen_alg_guess])
+
+        final_string = ''
+        output_string = ''
+        letter_match_score = 0
+        alphabet0 = alphabet_list.copy()
+        alphabet1 = alphabet_list.copy()
+        alphabet2 = alphabet_list.copy()
+        alphabet3 = alphabet_list.copy()
+        alphabet4 = alphabet_list.copy()
+        alphabet_number_list = [alphabet0, alphabet1, alphabet2, alphabet3, alphabet4]
 
         # for loop to print the information on the words
         for i in range(0, ((len(gen_alg_guess)))):
             if gen_alg_guess == wordle_word:
                 print(f'\nYou guessed it, the word is {wordle_word}')
+                final_string = gen_alg_guess
+                letter_match_score = 2
                 break
             elif gen_alg_guess[i] == wordle_word[i]:
                 print(f'{gen_alg_guess[i]} is in the word and in the correct spot')
+                output_string += 'w'
+                letter_match_score = 1
             elif gen_alg_guess[i] in wordle_word:
                 print(f'{gen_alg_guess[i]} is in the word, but not in the correct spot')
+                output_string += 'y'
+                letter_match_score = 1
             else:
                 print(f'{gen_alg_guess[i]} is not in the word')
+                output_string += 'g'
 
         # chunk of code to find the word to guess as the wordle word
         # initializing variables
-        letter_match = 0
         string1 = ''
         string2 = ''
-        final_string = ''
-        # while loop to change the non-matching letters into _
+
+        # while loop to randomly guess letters until it makes a word
         while final_string not in words_only_list:
-            string1 = gen_alg_guess
-            for letter in range(len(gen_alg_guess)):
-                if gen_alg_guess[i] == wordle_word[i]:
-                    string1 += gen_alg_guess[i]
-                    letter_match += 1
-                elif letter_match == 0:
-                    string1 = max(word_score_dict, key=word_score_dict.get)
+            # if statement to check if the score of the current word is
+
+            final_string = ''
+            for i in range(len(output_string)):
+                if letter_match_score == 0:
+                    final_string = max(word_score_dict, key=word_score_dict.get)
                     word_score_dict.update({string1: -1})
-                elif gen_alg_guess[i] != wordle_word[i]:
-                    string1 += '_'
-            final_string = string1
-            print(final_string)
 
-            # for loop to randomly guess letters until it creates a word
-            for character in final_string:
-                if character != '_':
-                    string2 += character
-                elif character == '_':
-                    string2 += random.choice(alphabet)
-            final_string = string2
+                elif output_string[i] == 'g':
+                    # add the letter since it's in the correct spot to the final string
+                    final_string += gen_alg_guess[i]
+                    # change the score of the letter since it's in the correct spot by a multiple of 10
+                    letter_count_dict[gen_alg_guess[i]] *= 10
+                    # for loop to recalculate the score of the words
+                    for word in words_only_list:
+                        word_score = 0
+                        for letter in word:
+                            word_score += letter_count_dict[letter]
+                        word_score_dict[word] = word_score
+
+                elif output_string[i] == 'y':
+                    # remove the letter from the same indexed list that contains all of the  possible
+                    # letters to be chosen from
+                    if gen_alg_guess[i] in alphabet_number_list[i]:
+                        alphabet_number_list[i].remove(gen_alg_guess[i])
+                    # multiply the score of the individual letter by 5
+                    letter_count_dict[gen_alg_guess[i]] *= 5
+                    # recalculate the score of words
+                    for word in words_only_list:
+                        word_score = 0
+                        for letter in word:
+                            word_score += letter_count_dict[letter]
+                        word_score_dict[word] = word_score
+
+                elif output_string[i] == 'w':
+                    for i in range(len(alphabet_number_list)):
+                        if gen_alg_guess[i] in alphabet_number_list[i]:
+                            alphabet_number_list[i].remove(gen_alg_guess[i])
+
+                if final_string in words_only_list:
+                    if word_score_dict[final_string] < word_score_dict[gen_alg_guess]:
+                        words_only_list.remove(final_string)
+        gen_alg_guess = final_string
+
+        # while loop to change the non-matching letters into _
+
+        # while final_string not in words_only_list:
+        #     string1 = gen_alg_guess
+        #     for letter in range(len(gen_alg_guess)):
+        #         if gen_alg_guess[i] == wordle_word[i]:
+        #             string1 += gen_alg_guess[i]
+        #             letter_match += 1
+        #         elif letter_match == 0:
+        #             string1 = max(word_score_dict, key=word_score_dict.get)
+        #             word_score_dict.update({string1: -1})
+        #         elif gen_alg_guess[i] != wordle_word[i]:
+        #             string1 += '_'
+        #     final_string = string1
+        #     print(final_string)
+        #
+        #     # for loop to randomly guess letters until it creates a word
+        #     for character in final_string:
+        #         if character != '_':
+        #             string2 += character
+        #         elif character == '_':
+        #             string2 += random.choice(alphabet)
+        #     final_string = string2
+        #
+        #     gen_alg_guess = final_string
+
+        print(gen_alg_guess)
 
 
-        print(final_string)
+    for i in range(0, ((len(gen_alg_guess)))):
+        if gen_alg_guess == wordle_word:
+            print(f'\nYou guessed it, the word is {wordle_word}')
+            break
+        elif gen_alg_guess[i] == wordle_word[i]:
+            print(f'{gen_alg_guess[i]} is in the word and in the correct spot')
+        elif gen_alg_guess[i] in wordle_word:
+            print(f'{gen_alg_guess[i]} is in the word, but not in the correct spot')
+        else:
+            print(f'{gen_alg_guess[i]} is not in the word')
 
 
-
-
-        gen_alg_guess = max(word_score_dict, key=word_score_dict.get)
-
-        # except handler to deal with there being too many or too few letters in the guessed word
 
 
 # if statement so that if the user wants to play the wordle game they can
-elif player == 'you' or 'You' or 'Me':
+elif player == 'you' or player == 'You' or player == 'Me':
     user_input = input('Guess the wordle! ')
 # while statement to play the actual game
     while user_input != 'quit':
