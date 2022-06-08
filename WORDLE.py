@@ -2,7 +2,8 @@ import random
 
 
 
-'''How do I make the wordle recognize if there's more than one letter in the wordle_word and if there'''
+'''How do I make the wordle recognize if there's more than one letter in the wordle_word or if there's more than one of 
+same letter in the user_guess or gen_alg_guess but not more than one word in the wordle_word'''
 
 '''list for in if statement, '''
 # class word_maker:
@@ -37,15 +38,20 @@ import random
 # function to determine if the guessed word is correct
 
 # determining who the user wants to play the game
-player = input('Who would you like to play the WORDLE game? Enter "you" if you want to play, enter "AI" if you want'
+player = input('Who would you like to play the WORDLE game? Enter "you" if you want to play, enter "gen" if you want'
                'a genetic algorithm AI to play ')
 # initializing variables
+genetic_alg_list = ['gen', 'genetic', 'genetic algorithms', 'genetic algorithm ai', 'genetic algorithm',
+                    'genetic algorithm AI', 'Gen', 'Genetic', 'Genetic Algorithms', 'Genetic Algorithm']
+user_list = ['me', 'ME', 'you', 'YOU', 'Me', "You"]
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 alphabet_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
                  'v', 'w', 'x', 'y', 'z']
 wordlist = []
 correctlengthlist = []
 symbol_list = "`~!@#$%^&*()_+{}|[]\\=-:;'"'<,>.?"/1234567890'
+words_only_list = []
+
 # reading the file for all of the words
 with open("usa.txt", "r") as all_words_file:
     for line in all_words_file.readlines():
@@ -62,14 +68,21 @@ with open("results.txt", "w") as results_file:
     for word in correctlengthlist:
         results_file.write(f'{word}')
 
+    # for loop to make a words list that only has the words and not the \n key so that way a dictionary with the words
+    # and their corresponding scores can be made
+
+for word in correctlengthlist:
+    if "'" not in word:
+        split_word = word.split('\n')
+        words_only_list.append(split_word[0])
+
 # line to get a randomly picked index to be the wordle word
 random_index_number = random.randint(0, ((len(correctlengthlist)) - 1))
-wordle_word = correctlengthlist[random_index_number]
+wordle_word = words_only_list[random_index_number]
 print(wordle_word)
-
 # if satement that will run if the user wants a genetic algorithm so solve the wordle game
 
-if player == 'AI' or player == 'ai':
+if player in genetic_alg_list:
     gen_alg_guess = ''
     # initializing AI variables
     letter_count_dict = {}
@@ -77,7 +90,6 @@ if player == 'AI' or player == 'ai':
     gen_alg_list = []
     letter_count_dict = {}
     word_score_dict = {}
-    words_only_list = []
     # triple for loop to get the number of times each letter is used in the file for every word to create a dictionary
     # with the letter being the key and the number of times that letter was used being the value for that letter key
     for alphabet_letter in alphabet:
@@ -88,12 +100,6 @@ if player == 'AI' or player == 'ai':
                     count += 1
                 letter_count_dict[alphabet_letter] = count
 
-    # for loop to make a words list that only has the words and not the \n key so that way a dictionary with the words
-    # and their corresponding scores can be made
-    for word in correctlengthlist:
-        if "'" not in word:
-            split_word = word.split('\n')
-            words_only_list.append(split_word[0])
 
     # for loop to get the score of each word which is the sum of all of the letters count and make a dictionary
     # with each word as key and the corresponding score for the word as the value
@@ -172,6 +178,7 @@ if player == 'AI' or player == 'ai':
                     # letters to be chosen from
                     if gen_alg_guess[i] in alphabet_number_list[i]:
                         alphabet_number_list[i].remove(gen_alg_guess[i])
+                    final_string += random.choice(alphabet_number_list[i])
                     # multiply the score of the individual letter by 5
                     letter_count_dict[gen_alg_guess[i]] *= 5
                     # recalculate the score of words
@@ -185,11 +192,15 @@ if player == 'AI' or player == 'ai':
                     for i in range(len(alphabet_number_list)):
                         if gen_alg_guess[i] in alphabet_number_list[i]:
                             alphabet_number_list[i].remove(gen_alg_guess[i])
+                    final_string += random.choice(alphabet_number_list[i])
+
 
                 if final_string in words_only_list:
                     if word_score_dict[final_string] < word_score_dict[gen_alg_guess]:
                         words_only_list.remove(final_string)
+            print(final_string, gen_alg_guess)
         gen_alg_guess = final_string
+        print(gen_alg_guess)
 
         # while loop to change the non-matching letters into _
 
@@ -235,10 +246,11 @@ if player == 'AI' or player == 'ai':
 
 
 # if statement so that if the user wants to play the wordle game they can
-elif player == 'you' or player == 'You' or player == 'Me':
+elif player in user_list:
+    count = 0
     user_input = input('Guess the wordle! ')
 # while statement to play the actual game
-    while user_input != 'quit':
+    while user_input != 'quit' or count <= 6:
         try:
             if f'{user_input}\n' not in correctlengthlist:
                 raise NameError
@@ -267,6 +279,11 @@ elif player == 'you' or player == 'You' or player == 'Me':
                 else:
                     print(f'{user_input[i]} is not in the word')
 
+            count += 1
+            if count == 6:
+                print(f'You have no more guesses, the word was {wordle_word}')
+                break
+
             user_input = input('Enter another guess for the next word or enter quit to stop playing. \n')
 
 
@@ -283,7 +300,6 @@ elif player == 'you' or player == 'You' or player == 'Me':
         except NameError:
             print("\nMake sure you enter a real word")
             user_input = input()
-
 
 
 print("\nThanks for playing!")
