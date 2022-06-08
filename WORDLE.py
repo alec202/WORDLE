@@ -114,18 +114,19 @@ if player in genetic_alg_list:
     word_score_dict.update({gen_alg_guess: -1})
     print(gen_alg_guess, word_score_dict[gen_alg_guess])
 
+    alphabet0 = alphabet_list.copy()
+    alphabet1 = alphabet_list.copy()
+    alphabet2 = alphabet_list.copy()
+    alphabet3 = alphabet_list.copy()
+    alphabet4 = alphabet_list.copy()
+    alphabet_number_list = [alphabet0, alphabet1, alphabet2, alphabet3, alphabet4]
+
     # While statement to keep playing the game until the AI guesses the word
     while gen_alg_guess != wordle_word:
-
+        # initialize some variables
         final_string = ''
         output_string = ''
         letter_match_score = 0
-        alphabet0 = alphabet_list.copy()
-        alphabet1 = alphabet_list.copy()
-        alphabet2 = alphabet_list.copy()
-        alphabet3 = alphabet_list.copy()
-        alphabet4 = alphabet_list.copy()
-        alphabet_number_list = [alphabet0, alphabet1, alphabet2, alphabet3, alphabet4]
 
         # for loop to print the information on the words
         for i in range(0, ((len(gen_alg_guess)))):
