@@ -89,11 +89,27 @@ for word in correctlengthlist:
         words_only_list.append(split_word[0])
 
 # line to get a randomly picked index to be the wordle word
-random_index_number = random.randint(0, ((len(correctlengthlist)) - 1))
+random_index_number = random.randint(0, len(correctlengthlist))
 wordle_word = words_only_list[random_index_number]
 print(wordle_word)
-# if satement that will run if the user wants a genetic algorithm so solve the wordle game
 
+# initialize some variables for the multiple letter check
+letter_appearance_dict = {}
+wordle_letter_one_list = []
+dict_number_value = 0
+duplicate_letter_appearance = 0
+# for loop to check if there are duplicate letters in the wordle_word
+for letter in wordle_word:
+    dict_number_value = 0
+    if letter in letter_appearance_dict:
+        letter_appearance_score = letter_appearance_dict[letter]
+        letter_appearance_score += 1
+        letter_appearance_dict[letter] = letter_appearance_score
+    else:
+        letter_appearance_dict[letter] = 1
+print(letter_appearance_dict)
+
+# if satement that will run if the user wants a genetic algorithm so solve the wordle game
 if player in genetic_alg_list:
     gen_alg_guess = ''
     # initializing AI variables
@@ -264,23 +280,21 @@ if player in genetic_alg_list:
 
 # if statement so that a search algorithm can run
 elif player in search_alg_list:
-
-    search_alg_guess = ''
+    #wordle_word = 'psion'
+    search_alg_guess = 'arose'
     # initializing AI variables
     letter_count_dict = {}
     count = 0
     letter_count_dict = {}
     word_score_dict = {}
     future_guesses_dict = {}
-    # triple for loop to get the number of times each letter is used in the file for every word to create a dictionary
-    # with the letter being the key and the number of times that letter was used being the value for that letter key
-    for alphabet_letter in alphabet:
-        count = 0
-        for word in correctlengthlist:
-            for letter in word:
-                if letter == alphabet_letter:
-                    count += 1
-                letter_count_dict[alphabet_letter] = count
+    search_alg_letters_dict = {}
+    # dictionary with each of the letters scores
+    letter_count_dict = {'q': 1, 'j': 2, 'z': 3, 'x': 4, 'v': 5, 'w': 6, 'f': 7, 'k': 8, 'g': 9, 'b': 10, 'h': 11,
+                         'm': 12, 'y': 13, 'p': 14, 'c': 15, 'u': 16, 'd': 17, 'n': 18, 't': 19, 'i': 20, 'l': 21,
+                         'o': 22, 'r': 23, 'a': 24, 's': 25, 'e': 26}
+
+
 
 
     # for loop to get the score of each word which is the sum of all of the letters count and make a dictionary
@@ -292,7 +306,6 @@ elif player in search_alg_list:
         word_score_dict[word] = word_score
 
     # initailize variables
-    search_alg_guess = 'arose'
     word_score_dict.update({search_alg_guess: -1})
     print(search_alg_guess, word_score_dict[search_alg_guess])
     guess_count = 0
@@ -301,18 +314,38 @@ elif player in search_alg_list:
 
     # While statement to keep playing the game until the AI guesses the word
     while search_alg_guess != wordle_word:
+
+        for letter in search_alg_guess:
+            dict_number_value = 0
+            if letter in search_alg_letters_dict:
+                letter_appearance_score = search_alg_letters_dict[letter]
+                letter_appearance_score += 1
+                search_alg_letters_dict[letter] = letter_appearance_score
+            else:
+                search_alg_letters_dict[letter] = 1
+        print(search_alg_letters_dict)
+
+        letter_appearance_dict_copy = letter_appearance_dict.copy()
         guess_count += 1
         # initialize some variables
         output_string = ''
         letter_match_score = 0
+        #for letter in search_alg_letters_dict:
+
 
         # for loop to print the information on the words
         for i in range(0, (len(search_alg_guess))):
             if search_alg_guess == wordle_word:
+                print(f'{search_alg_guess[0]} is in the word and in the correct spot')
+                print(f'{search_alg_guess[1]} is in the word and in the correct spot')
+                print(f'{search_alg_guess[2]} is in the word and in the correct spot')
+                print(f'{search_alg_guess[3]} is in the word and in the correct spot')
+                print(f'{search_alg_guess[4]} is in the word and in the correct spot')
                 print(f'\nYou guessed it, the word is {wordle_word}')
                 letter_match_score = 2
                 break
             elif search_alg_guess[i] == wordle_word[i]:
+
                 print(f'{search_alg_guess[i]} is in the word and in the correct spot')
                 output_string += 'g'
                 letter_match_score = 1
@@ -328,6 +361,11 @@ elif player in search_alg_list:
             # corresponding words list, maybe add words with the letters that are in the word but not correct spot to
             # this list as well or to another list. Try to pick word with the highest score
         for index in range(len(output_string)):
+            # if 'g' in output_string and 'y' in output_string:
+            #     g_letter_index = output_string.index('g')
+            #     y_letter_index = output_string.index('y')
+            #     for inde in range(len(output_string)):
+
             if search_alg_guess == wordle_word:
                 break
             elif letter_match_score < 1:
@@ -339,7 +377,7 @@ elif player in search_alg_list:
                 future_guesses_dict.update({search_alg_guess: -1})
                 break
             elif output_string[index] == 'g':
-                letter_count_dict[search_alg_guess[index]] *= 10
+                letter_count_dict[search_alg_guess[index]] *= 500
                 # recalculate the score of words
                 for word in words_only_list:
                     word_score = 0
@@ -352,7 +390,7 @@ elif player in search_alg_list:
                         future_guesses_list.append(word)
                         future_guesses_dict[word] = word_score_dict[word]
             elif output_string[index] == 'y':
-                letter_count_dict[search_alg_guess[index]] *= 5
+                letter_count_dict[search_alg_guess[index]] *= 35
                 # recalculate the score of words
                 for word in words_only_list:
                     word_score = 0
@@ -364,7 +402,15 @@ elif player in search_alg_list:
                     if search_alg_guess[index] in word and word not in future_guesses_list:
                         future_guesses_list.append(word)
                         future_guesses_dict[word] = word_score_dict[word]
-
+                if 'g' in output_string:
+                    g_letter_index = output_string.index('g')
+                    for key in future_guesses_dict:
+                        if key[g_letter_index] != search_alg_guess[g_letter_index]:
+                            future_guesses_dict[key] = -1
+                for key in future_guesses_dict:
+                    for letter in wrong_letters_list:
+                        if letter in key:
+                            future_guesses_dict[key] = -1
 
             elif output_string[index] == 'w':
                 # for loop to remove words with wrong letters in them
@@ -383,18 +429,24 @@ elif player in search_alg_list:
             elif 'g' in output_string and 'y' in output_string:
                 green_index = output_string.index('g')
                 yellow_index = output_string.index('y')
-                for word in future_guesses_list:
-                    if word[green_index] != search_alg_guess[green_index] and search_alg_guess[yellow_index] not in word:
-                        future_guesses_list.remove(word)
+                for key in future_guesses_dict:
+                    if key[green_index] != search_alg_guess[green_index] and search_alg_guess[yellow_index] not in key:
+                        future_guesses_dict[key] = -1
 
-            elif 'g' in output_string:
+            if 'g' in output_string:
                 green_index = output_string.index('g')
-                for word in future_guesses_list:
-                    if word[green_index] != search_alg_guess[green_index]:
-                        future_guesses_list.remove(word)
+                for key in future_guesses_dict:
+                    if key[green_index] != search_alg_guess[green_index]:
+                        future_guesses_dict[key] = -1
+            if 'y' in output_string:
+                yel_letter_index = output_string.index('y')
+                for key in future_guesses_dict:
+                    if key[yel_letter_index] == search_alg_guess[yel_letter_index]:
+                        future_guesses_dict[key] = -1
 
         if search_alg_guess != wordle_word:
             if search_alg_guess in word_score_dict:
+                future_guesses_dict[search_alg_guess] = -1
                 del word_score_dict[search_alg_guess]
             if search_alg_guess in future_guesses_list:
                 future_guesses_list.remove(search_alg_guess)
@@ -408,6 +460,11 @@ elif player in search_alg_list:
 
     for i in range(0, (len(search_alg_guess))):
         if search_alg_guess == wordle_word:
+            print(f'{search_alg_guess[0]} is in the word and in the correct spot')
+            print(f'{search_alg_guess[1]} is in the word and in the correct spot')
+            print(f'{search_alg_guess[2]} is in the word and in the correct spot')
+            print(f'{search_alg_guess[3]} is in the word and in the correct spot')
+            print(f'{search_alg_guess[4]} is in the word and in the correct spot')
             print(f'\nYou guessed it, the word is {wordle_word}')
             final_string = search_alg_guess
             letter_match_score = 2
@@ -451,6 +508,11 @@ elif player in user_list:
     # or has any of the guessed letters in the wordle word at all
             for i in range(0, ((len(user_input)))):
                 if user_input == wordle_word:
+                    print(f'{search_alg_guess[0]} is in the word and in the correct spot')
+                    print(f'{search_alg_guess[1]} is in the word and in the correct spot')
+                    print(f'{search_alg_guess[2]} is in the word and in the correct spot')
+                    print(f'{search_alg_guess[3]} is in the word and in the correct spot')
+                    print(f'{search_alg_guess[4]} is in the word and in the correct spot')
                     print(f'\nYou guessed it, the word is {wordle_word}')
                     break
                 elif user_input[i] == wordle_word[i]:
