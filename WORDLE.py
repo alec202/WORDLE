@@ -14,7 +14,6 @@ five letters in the word and if each letter in the genetic algorithm guess didn'
 '''How do I make the wordle recognize if there's more than one letter in the wordle_word or if there's more than one of 
 same letter in the user_guess or gen_alg_guess but not more than one word in the wordle_word'''
 
-'''list for in if statement, '''
 # class word_maker:
 #     def __init__(self, word):
 #         self.word = word
@@ -93,7 +92,7 @@ random_index_number = random.randint(0, len(correctlengthlist))
 wordle_word = words_only_list[random_index_number]
 print(wordle_word)
 
-wordle_word = 'fully'
+#wordle_word = 'fully'
 # initialize some variables for the multiple letter check
 letter_appearance_dict = {}
 wordle_letter_one_list = []
@@ -375,8 +374,6 @@ elif player in search_alg_list:
 
                 if search_alg_guess == wordle_word:
                     break
-                elif letter_match_score < 1 or output_string == 'wwwww':
-                    break
                 elif output_string[index] == 'g':
                     letter_count_dict[search_alg_guess[index]] *= 2000
                     # recalculate the score of words
@@ -416,13 +413,13 @@ elif player in search_alg_list:
                 elif output_string[index] == 'w':
                     if search_alg_guess[index] not in wordle_word:
                         # for loop to remove words with wrong letters in them
-                        for word in words_only_list:
+                        for word in word_score_dict:
                             if search_alg_guess[index] in word:
-                                if word in future_guesses_list:
-                                    future_guesses_list.remove(word)
-                                words_only_list.remove(word)
-                                future_guesses_dict[word] = -1
                                 word_score_dict[word] = -1
+
+                        for key in future_guesses_dict:
+                            if search_alg_guess[index] in key:
+                                future_guesses_dict[key] = -1
 
 
                         wrong_letters_list.append(search_alg_guess[index])
@@ -438,7 +435,7 @@ elif player in search_alg_list:
                     green_index = output_string.index('g')
                     yellow_index = output_string.index('y')
                     for key in future_guesses_dict:
-                        if key[green_index] != search_alg_guess[green_index] and search_alg_guess[yellow_index] not in key:
+                        if key[green_index] != search_alg_guess[green_index] or search_alg_guess[yellow_index] not in key:
                             future_guesses_dict[key] = -1
 
                 if 'g' in output_string:
@@ -458,6 +455,7 @@ elif player in search_alg_list:
                 for letter in wrong_letters_list:
                     if letter in key:
                         future_guesses_dict[key] = -1
+
 
             if search_alg_guess != wordle_word:
                 if search_alg_guess in word_score_dict:
@@ -509,8 +507,8 @@ elif player in search_alg_list:
             else:
                 print(f'{search_alg_guess[i]} is not in the word')
                 output_string += 'w'
-    except:
-        print(wordle_word)
+    except Exception as e:
+        print(e)
 
 
 # if statement so that if the user wants to play the wordle game they can
@@ -561,6 +559,14 @@ if player in user_list:
                 print(f'\nYou have no more guesses, the word was {wordle_word}')
                 break
             user_input = input(f'Enter another guess, you have {7 - count} guesses remaining.\n')
+            if user_input == wordle_word:
+                print(f'{user_input[0]} is in the word and in the correct spot')
+                print(f'{user_input[1]} is in the word and in the correct spot')
+                print(f'{user_input[2]} is in the word and in the correct spot')
+                print(f'{user_input[3]} is in the word and in the correct spot')
+                print(f'{user_input[4]} is in the word and in the correct spot')
+                print(f'\nYou guessed it, the word is {wordle_word}')
+
 
 
 
