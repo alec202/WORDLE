@@ -92,7 +92,7 @@ random_index_number = random.randint(0, len(correctlengthlist))
 wordle_word = words_only_list[random_index_number]
 print(wordle_word)
 
-#wordle_word = 'fully'
+#wordle_word = 'calms'
 # initialize some variables for the multiple letter check
 letter_appearance_dict = {}
 wordle_letter_one_list = []
@@ -282,8 +282,6 @@ if player in genetic_alg_list:
 # if statement so that a search algorithm can run
 elif player in search_alg_list:
     try:
-        '''The words witty and fully cause the algorithm to infinitly run and keep guessing the word eases for some 
-        reason'''
 
         search_alg_guess = 'arose'
         # initializing AI variables
@@ -297,7 +295,6 @@ elif player in search_alg_list:
         letter_count_dict = {'q': 1, 'j': 2, 'z': 3, 'x': 4, 'v': 5, 'w': 6, 'f': 7, 'k': 8, 'g': 9, 'b': 10, 'h': 11,
                              'm': 12, 'y': 13, 'p': 14, 'c': 15, 'u': 16, 'd': 17, 'n': 18, 't': 19, 'i': 20, 'l': 21,
                              'o': 22, 'r': 23, 'a': 24, 's': 25, 'e': 26}
-
 
 
 
@@ -437,11 +434,14 @@ elif player in search_alg_list:
                     for key in future_guesses_dict:
                         if key[green_index] != search_alg_guess[green_index] or search_alg_guess[yellow_index] not in key:
                             future_guesses_dict[key] = -1
-
+                # if statements to give words with letters in the wrong spot or words with none of the yellow/green
+                # letters in them a score of -1
                 if 'g' in output_string:
                     green_index = output_string.index('g')
                     for key in future_guesses_dict:
                         if key[green_index] != search_alg_guess[green_index]:
+                            future_guesses_dict[key] = -1
+                        if search_alg_guess[green_index] not in key:
                             future_guesses_dict[key] = -1
                         if key[green_index] == search_alg_guess[green_index]:
                             future_guesses_dict[key] *= 500
@@ -450,6 +450,9 @@ elif player in search_alg_list:
                     for key in future_guesses_dict:
                         if key[yel_letter_index] == search_alg_guess[yel_letter_index]:
                             future_guesses_dict[key] = -1
+                        if search_alg_guess[yel_letter_index] not in key:
+                            future_guesses_dict[key] = -1
+
 
             for key in future_guesses_dict:
                 for letter in wrong_letters_list:
