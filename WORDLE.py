@@ -418,8 +418,8 @@ elif player in search_alg_list:
                             if search_alg_guess[index] in key:
                                 future_guesses_dict[key] = -1
 
-
                         wrong_letters_list.append(search_alg_guess[index])
+
             print('\n', guess_count)
 
             # for loop to get words that match the index of the green letters and have the yellow letters in them
@@ -436,8 +436,8 @@ elif player in search_alg_list:
                             future_guesses_dict[key] = -1
                 # if statements to give words with letters in the wrong spot or words with none of the yellow/green
                 # letters in them a score of -1
-                if 'g' in output_string:
-                    green_index = output_string.index('g')
+                if output_string[ind] == 'g':
+                    green_index = ind
                     for key in future_guesses_dict:
                         if key[green_index] != search_alg_guess[green_index]:
                             future_guesses_dict[key] = -1
@@ -445,8 +445,8 @@ elif player in search_alg_list:
                             future_guesses_dict[key] = -1
                         if key[green_index] == search_alg_guess[green_index]:
                             future_guesses_dict[key] *= 500
-                if 'y' in output_string:
-                    yel_letter_index = output_string.index('y')
+                if output_string[ind] == 'y':
+                    yel_letter_index = ind
                     for key in future_guesses_dict:
                         if key[yel_letter_index] == search_alg_guess[yel_letter_index]:
                             future_guesses_dict[key] = -1
