@@ -90,15 +90,15 @@ for word in correctlengthlist:
 # line to get a randomly picked index to be the wordle word
 random_index_number = random.randint(0, len(correctlengthlist))
 wordle_word = words_only_list[random_index_number]
-print(wordle_word)
 
-#wordle_word = 'calms'
+# wordle_word = 'wafts'
 # initialize some variables for the multiple letter check
 letter_appearance_dict = {}
 wordle_letter_one_list = []
 dict_number_value = 0
 duplicate_letter_appearance = 0
-
+dup_letter_dict = {}
+# wordle_word = "cough"
 # for loop to check if there are duplicate letters in the wordle_word
 for letter in wordle_word:
     dict_number_value = 0
@@ -108,7 +108,12 @@ for letter in wordle_word:
         letter_appearance_dict[letter] = letter_appearance_score
     else:
         letter_appearance_dict[letter] = 1
-print(letter_appearance_dict)
+
+# variables for the multiple letters check
+multiple_appearance_dict = {}
+multiple_score = 0
+double_letters_dict = {}
+
 
 # if satement that will run if the user wants a genetic algorithm so solve the wordle game
 if player in genetic_alg_list:
@@ -282,6 +287,8 @@ if player in genetic_alg_list:
 # if statement so that a search algorithm can run
 elif player in search_alg_list:
     try:
+        print(wordle_word)
+        print(letter_appearance_dict)
 
         search_alg_guess = 'arose'
         # initializing AI variables
@@ -469,6 +476,58 @@ elif player in search_alg_list:
                     future_guesses_list.remove(search_alg_guess)
                 if search_alg_guess in words_only_list:
                     words_only_list.remove(search_alg_guess)
+
+             # code to check if there are multiple letters in the word after those multiple letters have been guessed
+            # """ Multiple Letter check part of code """
+            # c_letters_dict = {}
+            # search_alg_guess_copy = search_alg_guess.copy()
+            # for thing in search_alg_letters_dict:
+            #     item_times = 0
+            #     if search_alg_letters_dict[thing] > 1:
+            #         while thing in search_alg_guess:
+            #             if thing in search_alg_guess:
+            #                 item_times += 1
+            #                 c_letters_index = output_string.rfind(thing)
+            #                 output_string.pop(c_letters_index)
+            #                 c_letters_dict[thing] = item_times
+            #             if
+            #         for key in future_guesses_dict:
+            #             # if future_guesses_dict[key] > -1:
+            #             #     print(key)
+            #             temp_letter_dict = {}
+            #             for letterss in key:
+            #                 if letterss in temp_letter_dict:
+            #                     temp_letter_dict[letterss] += 1
+            #                 else:
+            #                     temp_letter_dict[letterss] = 1
+            #             for item in key:
+            #                 if item in search_alg_letters_dict and search_alg_letters_dict[item] > 1 and search_alg_letters_dict[item] == temp_letter_dict[item] and future_guesses_dict[key] > -1:
+            #                     future_guesses_dict[key] = -1
+            #             if future_guesses_dict[key] > -1:
+            #                 print(key)
+            #
+            #
+                        # for item in search_alg_letters_dict:
+                        #     if search_alg_letters_dict[item] > 1:
+
+
+
+                #     double_letters_dict[thing] = search_alg_letters_dict[thing]
+                #
+                # for keys in future_guesses_dict:
+                #     for leter in keys:
+                #         dict_number_value = 0
+                #         if leter in dup_letter_dict:
+                #             letter_appearance_score = dup_letter_dict[leter]
+                #             letter_appearance_score += 1
+                #             dup_letter_dict[leter] = letter_appearance_score
+                #         else:
+                #             dup_letter_dict[leter] = 1
+                #
+                #     for keey in search_alg_letters_dict:
+                #         if keey in dup_letter_dict and dup_letter_dict[keey] > 2:
+                #
+
 
             if letter_match_score < 1 or output_string == 'wwwww':
                 word_score_dict.update({search_alg_guess: -1})
