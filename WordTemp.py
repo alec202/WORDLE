@@ -1,60 +1,13 @@
 import random
 
-'''make another dictionary for the future gueses to get the max score of those guessesor delete the guesses with the
- wrong letters from the word_score_dictionary'''
-
-'''Word = timed'''
-'''For the genetic algorithm, it's running correctly, the problem is how long it takes to form a word. Since there's 
-five letters in the word and if each letter in the genetic algorithm guess didn't match at all in the word, which 
- isn't likely, there's still 21 letters in the alphabet and in 36 minutes and 50,213 guesses only the word "Eases" was 
- created, however the problem is that eases was the first word that was guessed, so this word was already deemed as a 
- word that isn't the solution. Additionally, eases was created about five times out of the 50,213 guesses. I wasn't sure
- if I should maybe'''
-
-'''How do I make the wordle recognize if there's more than one letter in the wordle_word or if there's more than one of 
-same letter in the user_guess or gen_alg_guess but not more than one word in the wordle_word'''
-
-# class word_maker:
-#     def __init__(self, word):
-#         self.word = word
-#
-#     def word_maker(self):
-#         self.alphabet = 'abcdefghijklmnopqrstuvwxyz'
-#         # chunk of code to find the word to guess as the wordle word
-#         letter_match = 0
-#         string1 = ''
-#         string2 = ''
-#         final_string = ''
-#         while final_string not in words_only_list:
-#             for letter in range(len(gen_alg_guess)):
-#                 if gen_alg_guess[i] == wordle_word[i]:
-#                     string1 += gen_alg_guess[i]
-#                     letter_match += 1
-#                 elif letter_match == 0:
-#                     final_string = max(word_score_dict, key=word_score_dict.get)
-#                     word_score_dict.update({gen_alg_guess: -1})
-#                 elif gen_alg_guess != wordle_word[i]:
-#                     string2 += random.choice(alphabet)
-#             final_string = string1 + string2
-#             if len(final_string) == 5:
-#
-#             print(final_string)
-#         print(final_string)
-#
-
-
-# function to determine if the guessed word is correct
 
 # determining who the user wants to play the game
 player = input('Who would you like to play the WORDLE game? Enter "you" if you want to play, enter "search" if you want'
-               'a search algorithm AI to play ')
+               'a search algorithm AI to play ').upper()
 # initializing variables
-genetic_alg_list = ['gen', 'genetic', 'genetic algorithms', 'genetic algorithm ai', 'genetic algorithm',
-                    'genetic algorithm AI', 'Gen', 'Genetic', 'Genetic Algorithms', 'Genetic Algorithm']
-
 user_list = ['me', 'ME', 'you', 'YOU', 'Me', "You"]
 search_alg_list = ['Search', 'SEARCH', 'search', 'search algorithm ai', 'Search Algorithm AI', 'Search AI',
-                   'search ai']
+                   'search ai', "SEARCH ALGORITHM AI", "SEARCH ALGORITHM", "SEARCH AI", "AI", ]
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 alphabet_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
                  'v', 'w', 'x', 'y', 'z']
@@ -115,180 +68,9 @@ multiple_score = 0
 double_letters_dict = {}
 
 
-# if satement that will run if the user wants a genetic algorithm so solve the wordle game
-if player in genetic_alg_list:
-    gen_alg_guess = ''
-    # initializing AI variables
-    letter_count_dict = {}
-    count = 0
-    gen_alg_list = []
-    letter_count_dict = {}
-    word_score_dict = {}
-    # triple for loop to get the number of times each letter is used in the file for every word to create a dictionary
-    # with the letter being the key and the number of times that letter was used being the value for that letter key
-    for alphabet_letter in alphabet:
-        count = 0
-        for word in correctlengthlist:
-            for letter in word:
-                if letter == alphabet_letter:
-                    count += 1
-                letter_count_dict[alphabet_letter] = count
-
-
-    # for loop to get the score of each word which is the sum of all of the letters count and make a dictionary
-    # with each word as key and the corresponding score for the word as the value
-    for word in words_only_list:
-        word_score = 0
-        for letter in word:
-            word_score += letter_count_dict[letter]
-        word_score_dict[word] = word_score
-
-    # initailize variables
-    gen_alg_guess = max(word_score_dict, key=word_score_dict.get)
-    word_score_dict.update({gen_alg_guess: -1})
-    print(gen_alg_guess, word_score_dict[gen_alg_guess])
-    gen_alg_guess = 'arose'
-
-
-    alphabet0 = alphabet_list.copy()
-    alphabet1 = alphabet_list.copy()
-    alphabet2 = alphabet_list.copy()
-    alphabet3 = alphabet_list.copy()
-    alphabet4 = alphabet_list.copy()
-    alphabet_number_list = [alphabet0, alphabet1, alphabet2, alphabet3, alphabet4]
-
-    # While statement to keep playing the game until the AI guesses the word
-    while gen_alg_guess != wordle_word:
-        # initialize some variables
-        final_string = ''
-        output_string = ''
-        letter_match_score = 0
-
-        # for loop to print the information on the words
-        for i in range(0, (len(gen_alg_guess))):
-            if gen_alg_guess == wordle_word:
-                print(f'\nYou guessed it, the word is {wordle_word}')
-                final_string = gen_alg_guess
-                letter_match_score = 2
-                break
-            elif gen_alg_guess[i] == wordle_word[i]:
-                print(f'{gen_alg_guess[i]} is in the word and in the correct spot')
-                output_string += 'g'
-                letter_match_score = 1
-            elif gen_alg_guess[i] in wordle_word:
-                print(f'{gen_alg_guess[i]} is in the word, but not in the correct spot')
-                output_string += 'y'
-                letter_match_score = 1
-            else:
-                print(f'{gen_alg_guess[i]} is not in the word')
-                output_string += 'w'
-
-        # chunk of code to find the word to guess as the wordle word
-        # initializing variables
-        string1 = ''
-        string2 = ''
-        word_count = 0
-
-        # while loop to randomly guess letters until it makes a word
-        while final_string not in words_only_list:
-
-            final_string = ''
-            for i in range(len(output_string)):
-                if letter_match_score == 0:
-                    final_string = max(word_score_dict, key=word_score_dict.get)
-                    word_score_dict.update({string1: -1})
-
-                elif output_string[i] == 'g':
-                    # add the letter since it's in the correct spot to the final string
-                    final_string += gen_alg_guess[i]
-                    # change the score of the letter since it's in the correct spot by a multiple of 10
-                    letter_count_dict[gen_alg_guess[i]] *= 10
-                    # for loop to recalculate the score of the words
-                    for word in words_only_list:
-                        word_score = 0
-                        for letter in word:
-                            word_score += letter_count_dict[letter]
-                        word_score_dict[word] = word_score
-
-                elif output_string[i] == 'y':
-                    # remove the letter from the same indexed list that contains all of the  possible
-                    # letters to be chosen from
-                    if gen_alg_guess[i] in alphabet_number_list[i]:
-                        alphabet_number_list[i].remove(gen_alg_guess[i])
-                    final_string += random.choice(alphabet_number_list[i])
-                    # multiply the score of the individual letter by 5
-                    letter_count_dict[gen_alg_guess[i]] *= 5
-                    # recalculate the score of words
-                    for word in words_only_list:
-                        word_score = 0
-                        for letter in word:
-                            word_score += letter_count_dict[letter]
-                        word_score_dict[word] = word_score
-
-                elif output_string[i] == 'w':
-                    for index in range(len(alphabet_number_list)):
-                        if gen_alg_guess[i] in alphabet_number_list[index]:
-                            alphabet_number_list[index].remove(gen_alg_guess[i])
-                    final_string += random.choice(alphabet_number_list[i])
-
-
-            if final_string in words_only_list:
-                if word_score_dict[final_string] < word_score_dict[gen_alg_guess]:
-                    words_only_list.remove(final_string)
-                    final_string = ''
-            word_count += 1
-            print(final_string, gen_alg_guess, word_count)
-        gen_alg_guess = final_string
-        print(gen_alg_guess)
-
-        # while loop to change the non-matching letters into _
-
-        # while final_string not in words_only_list:
-        #     string1 = gen_alg_guess
-        #     for letter in range(len(gen_alg_guess)):
-        #         if gen_alg_guess[i] == wordle_word[i]:
-        #             string1 += gen_alg_guess[i]
-        #             letter_match += 1
-        #         elif letter_match == 0:
-        #             string1 = max(word_score_dict, key=word_score_dict.get)
-        #             word_score_dict.update({string1: -1})
-        #         elif gen_alg_guess[i] != wordle_word[i]:
-        #             string1 += '_'
-        #     final_string = string1
-        #     print(final_string)
-        #
-        #     # for loop to randomly guess letters until it creates a word
-        #     for character in final_string:
-        #         if character != '_':
-        #             string2 += character
-        #         elif character == '_':
-        #             string2 += random.choice(alphabet)
-        #     final_string = string2
-        #
-        #     gen_alg_guess = final_string
-
-        print(gen_alg_guess)
-
-
-    for i in range(0, ((len(gen_alg_guess)))):
-        if gen_alg_guess == wordle_word:
-            print(f'\nYou guessed it, the word is {wordle_word}')
-            break
-        elif gen_alg_guess[i] == wordle_word[i]:
-            print(f'{gen_alg_guess[i]} is in the word and in the correct spot')
-        elif gen_alg_guess[i] in wordle_word:
-            print(f'{gen_alg_guess[i]} is in the word, but not in the correct spot')
-        else:
-            print(f'{gen_alg_guess[i]} is not in the word')
-
-
-
-
 # if statement so that a search algorithm can run
-elif player in search_alg_list:
+if player in search_alg_list:
     try:
-        print(wordle_word)
-        print(letter_appearance_dict)
 
         search_alg_guess = 'arose'
         # initializing AI variables
@@ -315,7 +97,6 @@ elif player in search_alg_list:
 
         # initailize variables
         word_score_dict.update({search_alg_guess: -1})
-        print(search_alg_guess, word_score_dict[search_alg_guess])
         guess_count = 0
         future_guesses_list = []
         wrong_letters_list = []
@@ -335,7 +116,6 @@ elif player in search_alg_list:
                     search_alg_letters_dict[letter] = letter_appearance_score
                 else:
                     search_alg_letters_dict[letter] = 1
-            print(search_alg_letters_dict)
 
             guess_count += 1
             # initialize some variables
@@ -427,7 +207,7 @@ elif player in search_alg_list:
 
                         wrong_letters_list.append(search_alg_guess[index])
 
-            print('\n', guess_count)
+            print(f'Guess: {guess_count} \n')
 
             # for loop to get words that match the index of the green letters and have the yellow letters in them
             for ind in range(len(output_string)):
@@ -477,56 +257,6 @@ elif player in search_alg_list:
                 if search_alg_guess in words_only_list:
                     words_only_list.remove(search_alg_guess)
 
-             # code to check if there are multiple letters in the word after those multiple letters have been guessed
-            # """ Multiple Letter check part of code """
-            # c_letters_dict = {}
-            # search_alg_guess_copy = search_alg_guess.copy()
-            # for thing in search_alg_letters_dict:
-            #     item_times = 0
-            #     if search_alg_letters_dict[thing] > 1:
-            #         while thing in search_alg_guess:
-            #             if thing in search_alg_guess:
-            #                 item_times += 1
-            #                 c_letters_index = output_string.rfind(thing)
-            #                 output_string.pop(c_letters_index)
-            #                 c_letters_dict[thing] = item_times
-            #             if
-            #         for key in future_guesses_dict:
-            #             # if future_guesses_dict[key] > -1:
-            #             #     print(key)
-            #             temp_letter_dict = {}
-            #             for letterss in key:
-            #                 if letterss in temp_letter_dict:
-            #                     temp_letter_dict[letterss] += 1
-            #                 else:
-            #                     temp_letter_dict[letterss] = 1
-            #             for item in key:
-            #                 if item in search_alg_letters_dict and search_alg_letters_dict[item] > 1 and search_alg_letters_dict[item] == temp_letter_dict[item] and future_guesses_dict[key] > -1:
-            #                     future_guesses_dict[key] = -1
-            #             if future_guesses_dict[key] > -1:
-            #                 print(key)
-            #
-            #
-                        # for item in search_alg_letters_dict:
-                        #     if search_alg_letters_dict[item] > 1:
-
-
-
-                #     double_letters_dict[thing] = search_alg_letters_dict[thing]
-                #
-                # for keys in future_guesses_dict:
-                #     for leter in keys:
-                #         dict_number_value = 0
-                #         if leter in dup_letter_dict:
-                #             letter_appearance_score = dup_letter_dict[leter]
-                #             letter_appearance_score += 1
-                #             dup_letter_dict[leter] = letter_appearance_score
-                #         else:
-                #             dup_letter_dict[leter] = 1
-                #
-                #     for keey in search_alg_letters_dict:
-                #         if keey in dup_letter_dict and dup_letter_dict[keey] > 2:
-                #
 
 
             if letter_match_score < 1 or output_string == 'wwwww':
@@ -574,7 +304,7 @@ elif player in search_alg_list:
 
 
 # if statement so that if the user wants to play the wordle game they can
-if player in user_list:
+elif player in user_list:
     user_input = input('Guess the wordle! ')
     count = 1
 # while statement to play the actual game
