@@ -1,5 +1,5 @@
 # WORDLE
-MICUP, Michigan Tech project for artificial intelligence to solve the recreated WORDLE game.
+MICUP, Michigan Tech project for a software engineered ai to solve the recreated WORDLE game.
 
 The list of words (and names) used to test this AI came from the usa.txt file.
 
